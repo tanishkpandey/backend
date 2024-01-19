@@ -13,7 +13,9 @@ app.use(cors({
 // app.use are used with implementing configarion or middleware
 
 app.use(express.json({limit: "16kb"})) //FOr json data : how much data limit you want to set to json.
+
 app.use(express.urlencoded({extended: true, limit: "16kb"})) // For URL data : extended will let to include object inside object and also we are setting a limit of 16kb
+
 app.use(express.static("public")) // store files and folder in a folder
 
 // To access and set the users browser's cookie from our server 

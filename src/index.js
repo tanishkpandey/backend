@@ -16,6 +16,7 @@ connectDB()
         throw error
     })
 })
+
 .catch((err) => {
     console.log('MongoDB connection falied.')
 })
