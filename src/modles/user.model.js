@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-
+import { Schema } from "mongoose";
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema({
         type: String,
 
     }
-}, {timestamps: ture});
+}, {timestamps: true});
 
 // whenever the data is entered before saving it prform the following task
 // refer mongoose documentation for this.
@@ -53,12 +53,12 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save", async function(next) {
     if(!this.isModified("password")) return next()
 
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = await bcrypt.hash(this.password, 10)
     next()
 })
 
 userSchema.methods.isPasswordCorrect = async function(password){
-    await bcrypt.compare(password, this.password)
+    return await bcrypt.compare(password, this.password);
 }
 
 userSchema.methods.generateAccessToken = function(){
@@ -75,6 +75,7 @@ userSchema.methods.generateAccessToken = function(){
         }
     )
 }
+
 userSchema.methods.generateRefreshToken = function(){
     return jwt.sign(
         {
